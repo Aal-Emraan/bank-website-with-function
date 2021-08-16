@@ -1,49 +1,51 @@
-function getInputValue(inputId){
-    const value = parseFloat(document.getElementById(inputId).value);
-    return value;
+
+function updateValue(textId,inputId){
+    const previousValue = parseFloat(document.getElementById(textId).innerText);
+    const inputValue = parseFloat(document.getElementById(inputId).value);
+    const updatedValue = previousValue + inputValue;
+    return updatedValue;
 }
 
-function updateValue(textId){
-    const getValue = parseFloat(document.getElementById(textId).innerText);
-    return getValue;
-}
-
-function updateTotal(totalId){
+function updateTotal(totalId,input){
     const previousTotal = parseFloat(document.getElementById('balance').innerText);
     if(totalId === 'deposit-amount'){
-        const newTotal = previousTotal + getInputValue(totalId);
+        const newTotal = previousTotal + input;
         return newTotal;
     }
     if(totalId === 'withdraw-amount'){
-        const newTotal = previousTotal - getInputValue(totalId);
+        const newTotal = previousTotal - input;
         return newTotal;
     }
 }
 
 document.getElementById('depositButton').addEventListener('click',function(){
-    if(getInputValue('deposit-amount') < 0){
-        window.alert('You cannot deposit a nagetive amount of money.');
+    const input = parseFloat(document.getElementById('deposit-amount').value);
+    if(input > 0){
+        document.getElementById('deposit').innerText = updateValue('deposit','deposit-amount');
+        document.getElementById('balance').innerText = updateTotal('deposit-amount',input);
         document.getElementById('deposit-amount').value = '';
-    }else{
-        document.getElementById('deposit').innerText = getInputValue('deposit-amount') + updateValue('deposit');
-        document.getElementById('balance').innerText = updateTotal('deposit-amount');
+    }
+    else{
+        window.alert('Invalid input.');
         document.getElementById('deposit-amount').value = '';
     }
 
 })
 
 document.getElementById('withdrawButton').addEventListener('click',function(){
-    if(getInputValue('withdraw-amount') < 0){
-        window.alert('You cannot withdraw a nagetive amount of money.');
-        document.getElementById('withdraw-amount').value = '';
-    }else if(updateTotal('withdraw-amount') < getInputValue('withdraw-amount')){
+    const input = parseFloat(document.getElementById('withdraw-amount').value);
+    const previousTotal = parseFloat(document.getElementById('balance').innerText);
+    if(previousTotal < input){
         window.alert("Insufficient balance.");
         document.getElementById('withdraw-amount').value = '';
     }
+    else if(input > 0){
+        document.getElementById('withdraw').innerText = updateValue('withdraw','withdraw-amount');
+        document.getElementById('balance').innerText = updateTotal('withdraw-amount',input);
+        document.getElementById('withdraw-amount').value = '';
+    }   
     else{
-        document.getElementById('withdraw').innerText = getInputValue('withdraw-amount') + updateValue('withdraw');
-        document.getElementById('balance').innerText = updateTotal('withdraw-amount');
+        window.alert('Invalid input.');
         document.getElementById('withdraw-amount').value = '';
     }
-
 })
