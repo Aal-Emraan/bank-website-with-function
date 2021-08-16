@@ -1,35 +1,29 @@
 
-function updateValue(textId,inputId){
+function updateValue(textId,inputId,input){
     const previousValue = parseFloat(document.getElementById(textId).innerText);
     const inputValue = parseFloat(document.getElementById(inputId).value);
     const updatedValue = previousValue + inputValue;
-    return updatedValue;
-}
 
-function updateTotal(totalId,input){
     const previousTotal = parseFloat(document.getElementById('balance').innerText);
-    if(totalId === 'deposit-amount'){
-        const newTotal = previousTotal + input;
-        return newTotal;
+    if(inputId === 'deposit-amount'){
+        document.getElementById('balance').innerText = previousTotal + input;
     }
-    if(totalId === 'withdraw-amount'){
-        const newTotal = previousTotal - input;
-        return newTotal;
+    if(inputId === 'withdraw-amount'){
+        document.getElementById('balance').innerText = previousTotal - input;
     }
+    return updatedValue;
 }
 
 document.getElementById('depositButton').addEventListener('click',function(){
     const input = parseFloat(document.getElementById('deposit-amount').value);
     if(input > 0){
-        document.getElementById('deposit').innerText = updateValue('deposit','deposit-amount');
-        document.getElementById('balance').innerText = updateTotal('deposit-amount',input);
+        document.getElementById('deposit').innerText = updateValue('deposit','deposit-amount',input);
         document.getElementById('deposit-amount').value = '';
     }
     else{
         window.alert('Invalid input.');
         document.getElementById('deposit-amount').value = '';
     }
-
 })
 
 document.getElementById('withdrawButton').addEventListener('click',function(){
@@ -40,8 +34,7 @@ document.getElementById('withdrawButton').addEventListener('click',function(){
         document.getElementById('withdraw-amount').value = '';
     }
     else if(input > 0){
-        document.getElementById('withdraw').innerText = updateValue('withdraw','withdraw-amount');
-        document.getElementById('balance').innerText = updateTotal('withdraw-amount',input);
+        document.getElementById('withdraw').innerText = updateValue('withdraw','withdraw-amount',input);
         document.getElementById('withdraw-amount').value = '';
     }   
     else{
